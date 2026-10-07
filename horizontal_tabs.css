@@ -1,422 +1,229 @@
-/* Zen-Mod-Forbidden-Horizontal-Tabs - by mmmintdesign */
+/* ==========================================================================
+   Forbidden Horizontal Tabs - Zen 1.23b Port
+   Classic top tab bar layout:
+   [Workspaces] [Pinned] | Tab 1 | Tab 2 | Tab 3 | [+]  _ □ ✕
+   ========================================================================== */
 
+/* 1. Main browser container: Stack navigator-toolbox above content */
 :root #browser {
-    display: flex !important;
-    flex-direction: column !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-@media (-moz-bool-pref: "zen.view.sidebar-expanded") {
-    & #navigator-toolbox {
-        display: flex !important;
-        flex-direction: row !important;
-        max-width: none !important;
-        min-width: 100vw !important;
-        padding: var(--zen-toolbox-padding) !important;
-    }
-}
-
-@media not (-moz-bool-pref: "zen.view.sidebar-expanded") {
-    #zen-tabbox-wrapper {
-        display: flex;
-        flex-direction: row;
-    }
-    & #navigator-toolbox {
-        min-width: 100% !important;
-    }
-}
-
-/* fix for Zen 1.7.4b: tab widths getting to didn't scale*/
-/* #tabbrowser-tabs {
-    display: -webkit-box !important;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: start;
-}
- */
-#vertical-pinned-tabs-container-separator {
-    display: none !important;
-}
-
-#zen-essentials-container, 
-#vertical-pinned-tabs-container, 
-#tabbrowser-arrowscrollbox {
-    -webkit-box-flex: 1;
-}
-
-#vertical-pinned-tabs-container:empty {
-    -webkit-box-flex: 0 !important;
-    width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    visibility: collapse !important;
-}
+/* 2. Navigator toolbox: Convert sidebar into horizontal top toolbar */
 #navigator-toolbox {
-    flex-direction: row !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 100vw !important;
+  height: auto !important;
+  min-height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  order: -1 !important;
 }
 
+/* 3. Titlebar: Horizontal row for workspaces, tabs and window controls */
 #titlebar {
-    flex-direction: row !important;
-    width: 100%;
-    height: 40px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 38px !important;
+  max-height: 42px !important;
+  align-items: center !important;
+  padding: 0 4px !important;
 }
 
-#zen-essentials-container {
-    --tab-min-height: 36px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    padding-inline-end: 0 !important;
+/* Hide vertical sidebar background decoration */
+#zen-toolbar-background {
+  display: none !important;
 }
 
-#vertical-pinned-tabs-container {
-    display: flex !important;
-    flex-direction: row !important;
-    padding-inline-end: 0 !important;
-}
-
-#zen-essentials-container .tabbrowser-tab {
-    width: 0% !important;
-}
-
-#vertical-pinned-tabs-container .tabbrowser-tab {
-    width: 0% !important;
-}
-
-.tabbrowser-tab[zen-glance-tab="true"] {
-    .tab-content {
-    }
-    
-    .tab-label-container {
-        display: none !important;
-        width: 0px !important;
-        max-width: 0px !important;
-    }
-}
-
-#tabbrowser-arrowscrollbox {
-    display: flex !important;
-    max-width: -moz-available;
-    overflow: hidden !important;
-}
-
+/* 4. TabsToolbar and its customization target */
 #TabsToolbar {
-    flex-direction: row !important;
-    gap: 8px;
-    overflow: hidden !important;
-    display: flex !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  height: 100% !important;
+  align-items: center !important;
+  margin: 0 !important;
 }
 
 #TabsToolbar-customization-target {
-    flex-direction: row !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  height: 100% !important;
+  align-items: center !important;
 }
 
-#tabbrowser-tabs[orient="vertical"] {
-    flex-direction: row !important;
+/* 5. Tabbrowser tabs container */
+#tabbrowser-tabs {
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  height: 100% !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-tabs {
-    flex-direction: row !important;
+/* 6. Workspaces: Position at the far left */
+#zen-workspaces-button {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  order: -10 !important;
+  margin-inline-end: 6px !important;
 }
 
-#zen-essentials-container {
-    container-name: tab-container;
-    container-type: normal;
-    max-width: 36px !important;
-    flex: 1 1 36px !important; 
-}
-#vertical-pinned-tabs-container {
-    container-name: tab-container;
-    container-type: normal;
-    max-width: 36px !important;
-    min-width: 36px !important;
-    flex: 1 1 36px !important; 
+/* 7. Essentials / Pinned tabs */
+#zen-essentials {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  margin-inline-end: 4px !important;
 }
 
-#vertical-pinned-tabs-container .tab-close-button {
-    display: none !important;
+#pinned-tabs-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
 }
 
-#vertical-pinned-tabs-container .tab-label-container {
-    display: none !important;
-}
-
-#vertical-pinned-tabs-container .tab-icon-image {
-    margin: 0 !important;
-}
-
-.tabbrowser-tab {
-    container-name: tab-container;
-    container-type: normal;
-    max-width: 200px !important;
-    min-width: 36px !important;
-    flex: 1 1 150px !important; 
-}
-
-.tabbrowser-tab[selected] {
-    flex: 2 1 150px !important; 
-    min-width: 32px !important;
-}
-
-@container tab-container (max-width: 80px) {
-    .tab-close-button {
-        margin-right: 0px !important;
-    }
-    .tab-icon-image {
-        padding: 0 !important;
-        margin-left: min(2.5px, 5%) !important;
-        margin-right: min(10px, 5%) !important;
-    }
-    .tab-label-container,
-    .tab-content {
-        margin: 0 !important;
-        padding-left: min(8px, 5%) !important;
-        padding-right: min(8px, 5%) !important;
-    }
-}
-
-@container tab-container (max-width: 44px) {
-    .tab-label-container {
-        display: none !important;
-    }
-    .tab-content {
-        justify-content: space-around !important;
-    }
-    .tab-close-button {
-        display: none !important;
-    }
-    .tabbrowser-tab[selected] {
-        & .tab-icon-image,
-        .tab-icon-stack {
-            display: none !important;
-        }
-        & .tab-content {
-            justify-content: space-around !important;
-            padding: 0 !important;
-        }
-        .tab-close-button {
-            display: block !important;
-        }
-    }
-}
-
-#vertical-pinned-tabs-container::after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    right: 0;
-    width: 1px;
-    height: 45%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: hsl(255, 10%, 100%);
-}
-
-slot {
-    flex-direction: row !important;
-}
-
-box.scrollbox-clip scrollbox slot {
-    display: flex !important;
-    width: 100% !important;
-    overflow: hidden !important;
-}
-
-.menupopup-arrowscrollbox > slot:nth-child(1) {
-    display: flex;
-    flex-direction: column !important;
-}
-
-/* Other UI Elements */
-#zen-current-workspace-indicator {
-    display: none !important;
-}
-
-#zen-sidebar-splitter {
-    display: none !important;
-}
-
-#tabbrowser-tabpanels {
-    padding-left: var(--zen-element-separation) !important;
-}
-
-#appcontent * {
-    overflow: visible !important;
-}
-
-#TabsToolbar-customization-target::after {
-    display: none !important;
-}
-
-#zen-sidebar-icons-wrapper {
-    width: auto !important;
-    padding: 0 !important;
-}
-
-/* Height Adjustments */
-#vertical-pinned-tabs-container,
-#zen-essentials-container,
-#tabbrowser-arrowscrollbox {
-    max-height: none !important;
-}
-
-#PanelUI-zen-gradient-generator {
-    min-width: 390px !important;
-}
-
-
-#zen-essentials-container:not(:empty), 
-#vertical-pinned-tabs-container:not(:empty), 
-#tabbrowser-arrowscrollbox {
-    -webkit-box-flex: 1;
-    min-width: min-content;
-    width: auto !important;
-}
-
-#vertical-pinned-tabs-container:not(:empty) {
-    display: -webkit-box !important;
-    -webkit-box-orient: horizontal;
-    min-width: fit-content !important;
-    width: fit-content !important;
-    position: relative;
-    margin-right: -1px !important;
-}
-
-#vertical-pinned-tabs-container:not(:empty) .tabbrowser-tab {
-    position: relative;
-    display: -webkit-box !important;
+/* 8. Regular tabs wrapper */
+#zen-tabs-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  height: 100% !important;
+  align-items: center !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  margin: 0 !important;
 }
 
 #tabbrowser-arrowscrollbox {
-    margin-left: 0 !important;
-}
-
-#vertical-pinned-tabs-container:empty,
-#zen-essentials-container:empty {
-    -webkit-box-flex: 0 !important;
-    width: 0 !important;
-    min-width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    visibility: collapse !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  align-items: center !important;
 }
 
 #tabbrowser-arrowscrollbox-periphery {
-	margin: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
 }
 
-hbox#nav-bar-customization-target toolbarbutton.chromeclass-toolbar-additional:nth-of-type(1) {
-    padding-inline-start: var(--toolbar-start-end-padding) !important;
+/* 9. Individual tab styling */
+.tabbrowser-tab:not([zen-essential="true"]):not([pinned]) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  min-width: 120px !important;
+  max-width: 220px !important;
+  width: auto !important;
+  height: 32px !important;
+  margin-inline: 2px !important;
+  margin-block: 0 !important;
+  flex: 0 1 180px !important;
 }
 
-toolbar#PersonalToolbar {
-    padding-left: 6px !important;
+.tabbrowser-tab[pinned],
+.tabbrowser-tab[zen-essential="true"] {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 32px !important;
+  margin-inline: 2px !important;
+  margin-block: 0 !important;
+  flex-shrink: 0 !important;
 }
 
-.tab-context-line {
-    width: 100% !important;
-    height: 3px !important;
+.tabbrowser-tab .tab-stack {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-.tabbrowser-tab[zen-glance-tab="true"] { 
-    flex-basis: fit-content !important;
-    max-width: 36px !important;
+.tabbrowser-tab .tab-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 8px !important;
 }
 
-#zen-essentials-container .tabbrowser-tab[zen-glance-tab="true"] {
-    left: 2px;
+.tabbrowser-tab .tab-label-container {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  opacity: 1 !important;
+  margin-inline-start: 6px !important;
 }
 
-#vertical-pinned-tabs-container .tabbrowser-tab[zen-glance-tab="true"] {
-    position: absolute !important;
+.tabbrowser-tab .tab-label {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
-#TabsToolbar-customization-target toolbarbutton,
-#TabsToolbar-customization-target toolbarpaletteitem {
-    -webkit-box-flex: 0 !important;
-    min-width: min-content;
-    width: auto !important;
-    
-    .toolbarbutton-text {
-	display: none !important;
-    }
+.tabbrowser-tab .tab-close-button {
+  display: flex !important;
+  margin-inline-start: auto !important;
 }
 
-/* fix for 1.8.2b tabs got hidden by other elements*/
-#zen-current-workspace-indicator-container {
-	margin-bottom: 0;
-	display: none;
-}
-.zen-workspace-tabs-section{
-	flex-direction: row;
-}
-#zen-sidebar-bottom-buttons{
-	width: auto !important;
-	padding: 0 !important;
-}
-
-/* if you want to put Workspaces to the left, uncomment out code below */
-
-/*
-#TabsToolbar {
-	flex-direction: row-reverse !important;
-}
-*/
-
-
-
-
-/*fix for 1.8.2b*/
-.zen-current-workspace-indicator {
-	display: none !important;
-}
-.zen-workspace-pinned-tabs-section {
-	display: none !important;
-}
-#zen-sidebar-bottom-buttons {
-	width: 100px !important;
-}
-.item-wrapper {
-	width: 200px !important;
-}
-#notifications-toolbar {
-	display: none !important;
-}
-#TabsToolbar {
-	padding-right: 110px !important;
-}
-.titlebar-buttonbox-container {
-	position: absolute;
-	right: 0;
-	transform: translateY(-48px);
-	height: 48px !important;
+/* 10. New tab button */
+#vertical-tabs-newtab-button,
+#tabs-newtab-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin-inline: 4px !important;
+  flex-shrink: 0 !important;
 }
 
-
-/* fix 1.13b*/
-#zen-sidebar-foot-buttons{
-    width:auto !important;
-}
-#TabsToolbar {
-	padding-right: 160px !important;
-}
-#zen-workspaces-button{
-    min-width: 48px;
+/* 11. Sidebar foot buttons (Settings, etc.) to the right */
+#zen-sidebar-foot-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  order: 10 !important;
+  margin-inline-start: auto !important;
 }
 
-/* fix 1.14b*/
-zen-workspace{
-    top:0;
-}
-/* fix 1.14b, prevent transformation and hide scroll*/
-.tabbrowser-tab{
-    transform: none !important;
-/* comment out if want possible transformations*/
-}
-.zen-tabs-wrapper{
-   overflow:hidden;
+/* 12. App content wrapper takes 100% width */
+#zen-appcontent-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  flex: 1 1 auto !important;
 }
 
-/*hide media buttons for now*/
-#zen-media-controls-toolbar{
-    display: none !important;
+#zen-tabbox-wrapper {
+  width: 100% !important;
+  flex: 1 1 auto !important;
 }
