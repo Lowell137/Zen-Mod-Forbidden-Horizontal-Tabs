@@ -1,0 +1,15 @@
+{
+  "id": "forbidden-horizontal-tabs",
+  "name": "Forbidden Horizontal Tabs",
+  "description": "Adds horizontal tabs to Zen Browser. Best used in Expanded mode.",
+  "homepage": "https://github.com/Lowell137/Zen-Mod-Forbidden-Horizontal-Tabs",
+  "author": "mmmintdesign",
+  "version": "1.0.0",
+  "createdAt": "2026-10-07",
+  "updatedAt": "2026-10-07",
+  "style": {
+    "chrome": "horizontal_tabs.css"
+  },
+  "tags": ["chrome", "tabs", "horizontal"],
+  "fork": ["zen"]
+}
