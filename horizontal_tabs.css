@@ -1,48 +1,65 @@
 /* ==========================================================================
    Forbidden Horizontal Tabs - Zen 1.23b Port
-   Classic top tab bar layout:
-   [Workspaces] [Pinned] | Tab 1 | Tab 2 | Tab 3 | [+]  _ □ ✕
+   Layout:
+   [Row 1] [Workspaces] [Pinned] | Tab 1 | Tab 2 | Tab 3 | [+]  _ □ ✕
+   [Row 2] [←] [→] [↻]  [ 🔒 URL Bar                          ] [Ext]
+   [Row 3] Web Content (100% width)
    ========================================================================== */
 
-/* 1. Main browser container: Stack navigator-toolbox above content */
+/* 1. Main browser window: vertical column */
 :root #browser {
   display: flex !important;
   flex-direction: column !important;
 }
 
-/* 2. Navigator toolbox: Convert sidebar into horizontal top toolbar */
-#navigator-toolbox {
+/* 2. Navigator Toolbox: full 100% width, override Zen's 48px collapsed clamp */
+:root #navigator-toolbox,
+#navigator-toolbox:not([zen-sidebar-expanded="true"]),
+#navigator-toolbox[zen-sidebar-expanded="true"],
+:is(#navigator-toolbox, .zen-library-space-body):not([zen-sidebar-expanded="true"]) {
   display: flex !important;
   flex-direction: column !important;
   width: 100vw !important;
-  max-width: 100vw !important;
   min-width: 100vw !important;
+  max-width: 100vw !important;
   height: auto !important;
   min-height: auto !important;
-  padding: 0 !important;
+  max-height: none !important;
   margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
   border: none !important;
   order: -1 !important;
+  position: static !important;
 }
 
-/* 3. Titlebar: Horizontal row for workspaces, tabs and window controls */
-#titlebar {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 38px !important;
-  max-height: 42px !important;
-  align-items: center !important;
-  padding: 0 4px !important;
-}
-
-/* Hide vertical sidebar background decoration */
-#zen-toolbar-background {
+/* Hide vertical sidebar graphic decoration and splitters */
+#zen-toolbar-background,
+#zen-sidebar-splitter,
+.sidebar-splitter {
   display: none !important;
 }
 
-/* 4. TabsToolbar and its customization target */
+/* 3. Titlebar (Tabs Row): Horizontal bar at top */
+:root #titlebar,
+:root:not([zen-sidebar-expanded="true"]) #titlebar,
+:root[zen-sidebar-expanded="true"] #titlebar {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 40px !important;
+  max-height: 42px !important;
+  align-items: center !important;
+  padding: 2px 8px !important;
+  padding-top: 2px !important;
+  margin: 0 !important;
+  order: 1 !important;
+}
+
+/* TabsToolbar container */
 #TabsToolbar {
   display: flex !important;
   flex-direction: row !important;
@@ -51,6 +68,7 @@
   height: 100% !important;
   align-items: center !important;
   margin: 0 !important;
+  padding: 0 !important;
 }
 
 #TabsToolbar-customization-target {
@@ -62,7 +80,7 @@
   align-items: center !important;
 }
 
-/* 5. Tabbrowser tabs container */
+/* Tabbrowser tabs */
 #tabbrowser-tabs {
   display: flex !important;
   flex-direction: row !important;
@@ -74,17 +92,19 @@
   padding: 0 !important;
 }
 
-/* 6. Workspaces: Position at the far left */
+/* Workspaces on the far left */
 #zen-workspaces-button {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   order: -10 !important;
-  margin-inline-end: 6px !important;
+  margin-inline-end: 8px !important;
+  flex-shrink: 0 !important;
 }
 
-/* 7. Essentials / Pinned tabs */
-#zen-essentials {
+/* Essentials / Pinned tabs */
+#zen-essentials,
+#pinned-tabs-container {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -92,14 +112,7 @@
   margin-inline-end: 4px !important;
 }
 
-#pinned-tabs-container {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  flex-shrink: 0 !important;
-}
-
-/* 8. Regular tabs wrapper */
+/* Regular tabs wrapper */
 #zen-tabs-wrapper {
   display: flex !important;
   flex-direction: row !important;
@@ -127,18 +140,18 @@
   align-items: center !important;
 }
 
-/* 9. Individual tab styling */
+/* Individual tabs styling */
 .tabbrowser-tab:not([zen-essential="true"]):not([pinned]) {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  min-width: 120px !important;
-  max-width: 220px !important;
+  min-width: 130px !important;
+  max-width: 240px !important;
   width: auto !important;
   height: 32px !important;
   margin-inline: 2px !important;
   margin-block: 0 !important;
-  flex: 0 1 180px !important;
+  flex: 0 1 190px !important;
 }
 
 .tabbrowser-tab[pinned],
@@ -147,12 +160,11 @@
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
   height: 32px !important;
   margin-inline: 2px !important;
-  margin-block: 0 !important;
   flex-shrink: 0 !important;
 }
 
@@ -172,17 +184,21 @@
   padding: 0 8px !important;
 }
 
+/* Force tab label to be visible! */
+:root:not([zen-sidebar-expanded="true"]) .tabbrowser-tab .tab-label-container,
 .tabbrowser-tab .tab-label-container {
   display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
   flex: 1 1 auto !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  opacity: 1 !important;
   margin-inline-start: 6px !important;
 }
 
 .tabbrowser-tab .tab-label {
+  display: inline !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -193,9 +209,9 @@
   margin-inline-start: auto !important;
 }
 
-/* 10. New tab button */
-#vertical-tabs-newtab-button,
-#tabs-newtab-button {
+/* New tab button */
+#tabs-newtab-button,
+#vertical-tabs-newtab-button {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -205,22 +221,84 @@
   flex-shrink: 0 !important;
 }
 
-/* 11. Sidebar foot buttons (Settings, etc.) to the right */
+/* Sidebar foot buttons (Settings, etc.) to the right */
 #zen-sidebar-foot-buttons {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   order: 10 !important;
   margin-inline-start: auto !important;
+  flex-shrink: 0 !important;
 }
 
-/* 12. App content wrapper takes 100% width */
+.titlebar-buttonbox-container {
+  display: flex !important;
+  align-items: center !important;
+  order: 20 !important;
+  margin-inline-start: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* 4. Nav-bar (URL Bar): Ensure full width and no negative margin overlap */
+:root #nav-bar,
+:root:not([zen-sidebar-expanded="true"]) #nav-bar,
+:root[zen-sidebar-expanded="true"] #nav-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 38px !important;
+  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 2px 8px !important;
+  order: 2 !important;
+  position: static !important;
+}
+
+#nav-bar-customization-target {
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  align-items: center !important;
+}
+
+#urlbar-container {
+  flex: 1 1 auto !important;
+  width: auto !important;
+}
+
+/* 5. App content navbar containers reset */
+#zen-appcontent-navbar-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+#zen-appcontent-navbar-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+}
+
+/* 6. Web Content area full width */
 #zen-appcontent-wrapper {
   display: flex !important;
   flex-direction: column !important;
   width: 100vw !important;
   max-width: 100vw !important;
   flex: 1 1 auto !important;
+  order: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #zen-tabbox-wrapper {
